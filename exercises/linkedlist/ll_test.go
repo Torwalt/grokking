@@ -21,4 +21,14 @@ func TestNewOrderList(t *testing.T) {
 
 	stringOrders := ll.String()
 	require.NotEmpty(t, stringOrders)
+
+	pizza := ll.Pop()
+	require.Equal(t, "Pizza", pizza.Item)
+
+	spaghetti := ll.Pop()
+	require.Equal(t, "Spaghetti", spaghetti.Item)
+
+	leftOvers := ll.String()
+	require.NotEmpty(t, leftOvers)
+	require.Less(t, len(leftOvers), len(stringOrders))
 }

@@ -38,6 +38,13 @@ func (ol *OrderList) String() string {
 	return strings.Join(out, "->")
 }
 
+func (ol *OrderList) Pop() Order {
+	order := ol.Head.Order
+	ol.Head = ol.Head.Next
+
+	return order
+}
+
 func (ol *OrderList) Insert(order Order) {
 	item := &OrderItem{
 		Order: order,
