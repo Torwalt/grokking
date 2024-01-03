@@ -1,21 +1,23 @@
 package quicksort
 
+import "math/rand"
+
 func QuickSort(in []int) []int {
 	if len(in) <= 1 {
 		return in
 	}
 
 	if len(in) == 2 {
-		if in[0] > in[0] {
+		if in[0] > in[1] {
 			in[0], in[1] = in[1], in[0]
 		}
 
 		return in
 	}
 
-	half := len(in) / 2
-	pivotIdx := half - 1
+	pivotIdx := rand.Intn(len(in) - 1)
 	pivotElem := in[pivotIdx]
+	half := len(in) / 2
 
 	left := make([]int, 0, len(in)-half)
 	right := make([]int, 0, len(in)-half)
