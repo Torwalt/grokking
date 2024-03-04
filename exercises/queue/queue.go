@@ -2,13 +2,10 @@ package queue
 
 import "errors"
 
-// TODO: Not yet implemented.
+type Graph map[string][]string
 
 type Queue struct {
-	data  []int
-	write int
-	read  int
-	count int
+	data []string
 }
 
 func NewQueue(size int) (*Queue, error) {
@@ -17,30 +14,69 @@ func NewQueue(size int) (*Queue, error) {
 	}
 
 	return &Queue{
-		data:  make([]int, size),
-		write: 0,
-		read:  0,
-		count: 0,
+		data: make([]string, 0, size),
 	}, nil
 }
 
-func (q *Queue) Enqueue(e int) {
-	if q.count == len(q.data) {
-		q.read = 0
-	}
-
-	q.data[q.read] = e
-	q.read++
-	q.count++
+func (q *Queue) Enqueue(e ...string) {
+	q.data = append(q.data, e...)
 }
 
-func (q *Queue) Dequeue() int {
-	if q.count == 0 {
-		return 0
+func (q *Queue) Dequeue() (string, bool) {
+	if len(q.data) == 0 {
+		return "", false
 	}
 
-	ret := q.data[q.write]
-	q.count--
+	out := q.data[0]
+	q.data = q.data[1:]
 
-	return ret
+	return out, true
+}
+
+// The idea of BreadthFirstSearch is to find a Node in a graph in a non-greedy
+// manner. When supplied a start, BFS will append adjacent Nodes of the start
+// Node to a FIFO queue. Each Node in the queue will be checked whether it is
+// the searched for Node and if not, the adjacent Nodes of that Node are also
+// added to the queue. To prevent an infinite loop of Nodes pointing to each
+// other, another structure could track the already searched Nodes.
+func BreadthFirstSearch(g Graph, start, find string) bool {
+	q, _ := NewQueue(10)
+
+	if start == find {
+		return true
+	}
+
+	searched := map[string]struct{}{}
+	searched[start] = struct{}{}
+
+	s, ok := g[start]
+	if !ok {
+		return false
+	}
+
+	q.Enqueue(s...)
+
+	for {
+		d, ok := q.Dequeue()
+		if !ok {
+			return false
+		}
+
+		if _, ok := searched[d]; ok {
+			continue
+		}
+
+		if d == find {
+			return true
+		}
+
+		searched[d] = struct{}{}
+
+		s, ok := g[d]
+		if !ok {
+			continue
+		}
+
+		q.Enqueue(s...)
+	}
 }

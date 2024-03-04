@@ -8,8 +8,15 @@ import (
 )
 
 func TestQueue(t *testing.T) {
-	q, err := queue.NewQueue(20)
-	require.NoError(t, err)
+	g := queue.Graph{
+		"Alex":   []string{"Annika", "Georg", "Irina"},
+		"Annika": []string{"Astrid", "Guido", "Nadine", "Alex"},
+		"Nadine": []string{"Astrid", "Guido", "Annika", "Arthur"},
+		"Georg":  []string{"Alex", "Sasha"},
+		"Irina":  []string{"Alex", "Leyla"},
+		"Astrid": []string{"Guido", "Annika", "Nadine"},
+	}
 
-	q.Enqueue(4)
+	found := queue.BreadthFirstSearch(g, "Alex", "Leyla")
+	require.True(t, found)
 }
