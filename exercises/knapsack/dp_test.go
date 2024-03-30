@@ -166,6 +166,54 @@ func TestOptimizeLoot(t *testing.T) {
 			},
 			weight: 4,
 		},
+		{
+			name: "different example",
+			inLoot: []knapsack.Loot{
+				{
+					Name:   "Water",
+					Price:  10,
+					Weight: 3,
+				},
+				{
+					Name:   "Book",
+					Price:  3,
+					Weight: 1,
+				},
+				{
+					Name:   "Food",
+					Price:  9,
+					Weight: 2,
+				},
+				{
+					Name:   "Jacket",
+					Price:  5,
+					Weight: 2,
+				},
+				{
+					Name:   "Camera",
+					Price:  6,
+					Weight: 1,
+				},
+			},
+			expOptimizedLoot: []knapsack.Loot{
+				{
+					Name:   "Water",
+					Price:  10,
+					Weight: 3,
+				},
+				{
+					Name:   "Food",
+					Price:  9,
+					Weight: 2,
+				},
+				{
+					Name:   "Camera",
+					Price:  6,
+					Weight: 1,
+				},
+			},
+			weight: 6,
+		},
 	}
 
 	for _, test := range tests {

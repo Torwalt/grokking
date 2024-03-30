@@ -65,6 +65,14 @@ func OptimizeLoot(toSteal []Loot, maxWeight uint) []Loot {
 		}
 	}
 
+	// Sort uniqueLoot so that objectively better Loot comes before worse loot.
+	sort.Slice(uniqueLoot, func(i, j int) bool {
+		return uniqueLoot[i].Weight <= uniqueLoot[j].Weight
+	})
+	sort.Slice(uniqueLoot, func(i, j int) bool {
+		return uniqueLoot[i].Price >= uniqueLoot[j].Price
+	})
+
 	for _, l := range uniqueLoot {
 		for i := uint(1); i <= maxWeight; i++ {
 			if l.Weight > i {
