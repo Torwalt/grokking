@@ -62,8 +62,11 @@ func (sb *SensorBuf) Emit() []*SensorData {
 }
 
 func (sb *SensorBuf) increment(idx int) int {
-	// idx: -1, size 5 -> -1 + 1 % 5 = 2
-	// idx: 4, size 5 -> 4 + 1 % 5 = 0
+	// idx: -1, size 5 -> (-1 + 1) % 5 = 0
+	// idx: 0, size 5 -> (0 + 1) % 5 = 1
+	// ...
+	// idx: 4, size 5 -> (4 + 1) % 5 = 0
+	// idx: 5, size 5 -> (5 + 1) % 5 = 1
 	// as soon as size is reached, restart from index 0.
 	return (idx + 1) % sb.size
 }
